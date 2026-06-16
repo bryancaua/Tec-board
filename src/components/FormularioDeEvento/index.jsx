@@ -7,8 +7,23 @@ import { ListaSuspensa } from "../ListaSuspensa";
 import { BotaoSubmeter } from "../Botao";
 
 export function FormularioDeEvento({ temas }) {
+  function aoFormSubmetido(formData) {
+    console.log("olá");
+
+    const evento = {
+      capa: formData.get('capa'),
+      tema: temas.find(function (item) {
+        return item.id == formData.get('tema')
+      }),
+      data: new Date(formData.get('dataEvento')),
+      titulo: formData.get('nomeEvento')
+    };
+
+    console.log(evento);
+  }
+
   return (
-    <form className="form-evento">
+    <form className="form-evento" action={aoFormSubmetido}>
       <TituloFormulario>Preencha para criar um evento:</TituloFormulario>
 
       <div className="campos">
@@ -20,21 +35,21 @@ export function FormularioDeEvento({ temas }) {
             id="nomeEvento"
             placeholder="Summer dev hits"
           />
-          <Label htmlFor="nomeEvento">Qual o endereço da imagem?</Label>
+          <Label htmlFor="capa">Qual o endereço da imagem?</Label>
           <CampoDeEntrada
             type="text"
-            name="nomeEvento"
-            id="nomeEvento"
+            name="capa"
+            id="capa"
             placeholder="https://..."
           />
         </FieldSet>
         <FieldSet>
-          <Label htmlFor="nomeEvento">Qual a data do evento?</Label>
+          <Label htmlFor="dataEvento">Qual a data do evento?</Label>
           <CampoDeEntrada type="date" name="dataEvento" id="dataEvento" />
         </FieldSet>
 
         <FieldSet>
-          <Label htmlFor="nomeEvento">Tema do evento</Label>
+          <Label htmlFor="tema">Tema do evento</Label>
           <ListaSuspensa name="tema" id="tema" itens={temas} />
         </FieldSet>
       </div>
