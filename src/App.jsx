@@ -25,9 +25,9 @@ function App() {
   ]);
 
   function adicionarEvento(evento) {
-    console.log("evento criado ->", eventos);
-
     setEventos([...eventos, evento]);
+
+    console.log("evento criado ->", eventos);
   }
 
   return (
@@ -39,16 +39,32 @@ function App() {
 
       <FormularioDeEvento temas={temas} aoSubmeter={adicionarEvento} />
 
-      {temas.map(function (item) {
-        return (
-          <section key={item.id}>
-            <Tema temas={item} />
-            {eventos.map(function (item, indice) {
-              return <CardEvento evento={item} key={indice} />;
-            })}
-          </section>
-        );
-      })}
+      <section className="container">
+        {temas.map(function (tema) {
+          if (
+            !eventos.some(function (evento) {
+              return evento.tema.id == tema.id;
+            })
+          ) {
+            return null;
+          }
+
+          return (
+            <section key={tema.id}>
+              <Tema temas={tema} />
+              <div className="eventos">
+                {eventos
+                  .filter(function (evento) {
+                    return evento.tema.id == tema.id;
+                  })
+                  .map(function (evento, indice) {
+                    return <CardEvento evento={evento} key={indice} />;
+                  })}
+              </div>
+            </section>
+          );
+        })}
+      </section>
     </main>
   );
 }
